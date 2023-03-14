@@ -1,10 +1,8 @@
-package com.lunaticj.wrapGate.starter;
+package com.lunaticj.wrapGate.learn;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
 
 public class EventBusTestVerticle extends AbstractVerticle {
@@ -12,7 +10,7 @@ public class EventBusTestVerticle extends AbstractVerticle {
     Vertx.vertx().deployVerticle(new EventBusTestVerticle());
   }
   @Override
-  public void start() throws Exception {
+  public void start() {
     EventBus eventBus = vertx.eventBus();
     MessageConsumer<String> consumer1 = eventBus.localConsumer("addr");
     MessageConsumer<String> consumer2 = eventBus.localConsumer("addr");

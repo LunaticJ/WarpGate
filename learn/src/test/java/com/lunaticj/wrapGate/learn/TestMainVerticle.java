@@ -1,4 +1,4 @@
-package com.lunaticj.wrapGate.starter;
+package com.lunaticj.wrapGate.learn;
 
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
@@ -16,7 +16,8 @@ public class TestMainVerticle {
   }
 
   @Test
-  void verticle_deployed(Vertx vertx, VertxTestContext testContext) throws Throwable {
+  void verticle_deployed(Vertx vertx, VertxTestContext testContext) {
     testContext.completeNow();
+    vertx.close();
   }
 }
