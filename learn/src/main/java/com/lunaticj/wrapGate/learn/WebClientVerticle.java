@@ -15,7 +15,7 @@ public class WebClientVerticle extends AbstractVerticle {
     WebClient webClient = WebClient.create(vertx);
     JsonObject body = new JsonObject();
     body.put("id", "123");
-    webClient.post("http://localhost:9527/books").sendJsonObject(body)
+    webClient.postAbs("http://localhost:9527/books").sendJsonObject(body)
       .onSuccess(resp -> System.out.println(resp.body()))
       .onFailure(Throwable::printStackTrace);
   }
