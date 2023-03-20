@@ -10,6 +10,7 @@
     <modules>
         <module>learn</module>
         <module>warp-prism</module>
+        <module>templar</module>
     </modules>
 
     <properties>
