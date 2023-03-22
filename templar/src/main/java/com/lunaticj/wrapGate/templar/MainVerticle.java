@@ -17,7 +17,7 @@ public class MainVerticle extends AbstractVerticle {
   public void start(Promise<Void> startPromise) {
     Router router = Router.router(vertx);
     router.route().handler(ctx -> {
-      System.out.println(ctx.request().remoteAddress().toString());
+      LOGGER.info("Hello! "+ctx.request().remoteAddress());
       ctx.next();
     });
     router.route()
