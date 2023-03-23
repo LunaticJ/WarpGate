@@ -1,6 +1,7 @@
 package com.lunaticj.wrapGate.templar;
 
 import io.netty.util.internal.StringUtil;
+import io.vertx.config.ConfigRetriever;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServerRequest;
@@ -45,10 +46,16 @@ public class MainVerticle extends AbstractVerticle {
         }
         ctx.response().setStatusCode(statusCode).end(requestBody.toString());
       });
-    vertx.createHttpServer().requestHandler(router).listen(4399)
-      .onSuccess(httpServer -> LOGGER.info("HTTP server started on port " + httpServer.actualPort()))
-      .onFailure(throwable -> {
-        LOGGER.error(throwable.getMessage(), throwable);
-      });
+    ConfigRetriever retriever = ConfigRetriever.create(vertx);
+    retriever.getConfig(jsonObjectAsyncResult -> {
+      JsonObject result = jsonObjectAsyncResult.result();
+      vertx.createHttpServer().requestHandler(router).listen(result.getInteger("server_port"))
+        .onSuccess(httpServer -> LOGGER.info("HTTP server started on port " + httpServer.actualPort()))
+        .onFailure(throwable -> {
+          LOGGER.error(throwable.getMessage(), throwable);
+        });
+    });
+
+
   }
 }
