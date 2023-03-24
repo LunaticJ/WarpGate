@@ -11,6 +11,8 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class MainVerticle extends AbstractVerticle {
   private static final Logger LOGGER = LoggerFactory.getLogger(MainVerticle.class);
 
@@ -47,14 +49,10 @@ public class MainVerticle extends AbstractVerticle {
         ctx.response().setStatusCode(statusCode).end(requestBody.toString());
       });
     ConfigRetriever retriever = ConfigRetriever.create(vertx);
-    retriever.getConfig(jsonObjectAsyncResult -> {
-      JsonObject result = jsonObjectAsyncResult.result();
-      vertx.createHttpServer().requestHandler(router).listen(result.getInteger("server_port"))
-        .onSuccess(httpServer -> LOGGER.info("HTTP server started on port " + httpServer.actualPort()))
-        .onFailure(throwable -> {
-          LOGGER.error(throwable.getMessage(), throwable);
-        });
-    });
+    retriever.getConfig()
+      .compose(config -> vertx.createHttpServer().requestHandler(router).listen(config.getInteger("server_port")))
+      .onSuccess(httpServer -> LOGGER.info("HTTP server started on port " + httpServer.actualPort()))
+      .onFailure(throwable -> LOGGER.error(throwable.getMessage(), throwable));
 
 
   }
