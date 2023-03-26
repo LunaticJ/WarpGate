@@ -11,6 +11,7 @@
         <module>learn</module>
         <module>warp-prism</module>
         <module>templar</module>
+        <module>star-gate</module>
     </modules>
 
     <properties>
