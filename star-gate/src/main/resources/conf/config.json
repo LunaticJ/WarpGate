@@ -1,0 +1,21 @@
+{
+  "server": {
+    "port": 9527
+  },
+  "api": {
+    "00000": {
+      "name": "api-1",
+      "guid": "00000",
+      "host": "localhost",
+      "port": 4399,
+      "path": "/test1"
+    },
+    "00001": {
+      "name": "api-2",
+      "guid": "00001",
+      "host": "localhost",
+      "port": 4399,
+      "path": "/test1"
+    }
+  }
+}
