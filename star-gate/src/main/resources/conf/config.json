@@ -2,20 +2,33 @@
   "server": {
     "port": 9527
   },
-  "api": {
-    "00000": {
+  "apis":[
+    {
       "name": "api-1",
       "guid": "00000",
       "host": "localhost",
       "port": 4399,
       "path": "/test1"
-    },
-    "00001": {
+    },{
       "name": "api-2",
       "guid": "00001",
       "host": "localhost",
       "port": 4399,
       "path": "/test2"
     }
-  }
+  ],
+  "apps":[
+    {
+      "name": "app-1",
+      "guid": "00000",
+      "key": "1",
+      "secret": "1"
+    },{
+      "name": "app-2",
+      "guid": "00001",
+      "key": "2",
+      "secret": "3"
+    }
+  ]
+
 }
