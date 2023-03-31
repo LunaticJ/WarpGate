@@ -24,7 +24,7 @@ public class MainVerticle extends AbstractVerticle {
       .onSuccess(config -> {
         // deploy http server
         vertx.deployVerticle(new HttpServerVerticle(config.getJsonObject("server").getInteger("port")));
-        vertx.deployVerticle(new CacheVerticle(config.getJsonArray("apis", new JsonArray()), config.getJsonArray("apps", new JsonArray())));
+        vertx.deployVerticle(new CacheVerticle(config.getJsonArray("apis", new JsonArray()), config.getJsonArray("clients", new JsonArray())));
       })
       .onFailure(throwable -> LOGGER.error(throwable.getMessage(), throwable));
   }

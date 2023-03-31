@@ -10,11 +10,11 @@ import io.vertx.core.shareddata.SharedData;
 
 public class CacheVerticle extends AbstractVerticle {
   private JsonArray apis;
-  private JsonArray apps;
+  private JsonArray clients;
 
-  public CacheVerticle(JsonArray apis, JsonArray apps) {
+  public CacheVerticle(JsonArray apis, JsonArray clients) {
     this.apis = apis;
-    this.apps = apps;
+    this.clients = clients;
   }
 
   @Override
@@ -28,13 +28,13 @@ public class CacheVerticle extends AbstractVerticle {
     }
     putApiFuture.onSuccess(v -> System.out.println("api cache load complete"))
       .onFailure(Throwable::printStackTrace);
-    Future<AsyncMap<Object, Object>> getAppsMapFuture = sharedData.getAsyncMap("apps");
-    Future<Void> putAppFuture = null;
-    for (int i = 0; i < apps.size(); i++) {
-      JsonObject app = apps.getJsonObject(i);
-      putAppFuture = getAppsMapFuture.compose(apisMap -> apisMap.put(app.getString("guid"), app));
+    Future<AsyncMap<Object, Object>> getClientsMapFuture = sharedData.getAsyncMap("clients");
+    Future<Void> putClientFuture = null;
+    for (int i = 0; i < clients.size(); i++) {
+      JsonObject client = clients.getJsonObject(i);
+      putClientFuture = getClientsMapFuture.compose(clientsMap -> clientsMap.put(client.getString("guid"), client));
     }
-    putAppFuture.onSuccess(v -> System.out.println("app cache load complete"))
+    putClientFuture.onSuccess(v -> System.out.println("client cache load complete"))
       .onFailure(Throwable::printStackTrace);
   }
 }

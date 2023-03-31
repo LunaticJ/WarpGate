@@ -17,7 +17,7 @@
       "path": "/test2"
     }
   ],
-  "apps":[
+  "clients":[
     {
       "name": "app-1",
       "guid": "00000",

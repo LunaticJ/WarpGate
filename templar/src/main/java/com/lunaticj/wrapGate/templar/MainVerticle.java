@@ -39,7 +39,7 @@ public class MainVerticle extends AbstractVerticle {
             this.block(request.getParam("block", ""));
             ctx.response().setStatusCode(Optional.ofNullable(request.getParam("statusCode"))
               .filter(statusCode -> !StringUtil.isNullOrEmpty(statusCode))
-              .map(statusCode -> Integer.getInteger(statusCode))
+              .map(statusCode -> Integer.parseInt(statusCode))
               .orElse(200))
               .send(requestBody.toString());
             ctx.next();
@@ -55,6 +55,7 @@ public class MainVerticle extends AbstractVerticle {
   private void sayHi(Router router) {
     router.route().handler(ctx -> {
       LOGGER.info("Hello! "+ctx.request().remoteAddress());
+      LOGGER.info("uri: "+ctx.request().uri());
       ctx.put("startTimeStamp", System.currentTimeMillis());
       ctx.next();
     });
