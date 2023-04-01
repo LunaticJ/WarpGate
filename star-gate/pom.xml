@@ -4,7 +4,7 @@
      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.lunaticj.wrapGate</groupId>
+  <groupId>io.github.lagom130.wrapGate</groupId>
   <artifactId>star-gate</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
@@ -19,7 +19,7 @@
     <vertx.version>4.4.0</vertx.version>
     <junit-jupiter.version>5.9.1</junit-jupiter.version>
 
-    <main.verticle>com.lunaticj.wrapGate.starGate.MainVerticle</main.verticle>
+    <main.verticle>io.github.lagom130.wrapGate.starGate.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
   </properties>
 
