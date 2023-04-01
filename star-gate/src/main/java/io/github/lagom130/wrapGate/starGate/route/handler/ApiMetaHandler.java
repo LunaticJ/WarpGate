@@ -2,8 +2,10 @@ package io.github.lagom130.wrapGate.starGate.route.handler;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.shareddata.SharedData;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+
+import static io.github.lagom130.wrapGate.starGate.constant.BusAddress.CACHE_API_INFO_GET;
 
 /**
  * api meta handler
@@ -21,17 +23,14 @@ public class ApiMetaHandler implements Handler<RoutingContext> {
   @Override
   public void handle(RoutingContext ctx) {
     String apiId = ctx.pathParam("apiId");
-    SharedData sharedData = vertx.sharedData();
-    sharedData.getAsyncMap("apis").compose(map -> map.get(apiId))
-      .onSuccess(apiInfo -> {
-        if(apiInfo != null) {
-          ctx.put("apiMeta", apiInfo).next();
-        } else {
-          ctx.put("msg", "not found api");
-          ctx.fail(404);
-        }
-      })
-      .onFailure(t -> ctx.fail(400, t));
+    vertx.eventBus().request(CACHE_API_INFO_GET, apiId).onSuccess(msg -> {
+      JsonObject apiInfo = (JsonObject) msg.body();
+      if(apiInfo != null) {
+        ctx.put("apiMeta", apiInfo).next();
+      } else {
+        ctx.put("msg", "not found api").fail(404);
+      }
+    }).onFailure(t -> ctx.fail(500, t));
   }
 }
 
