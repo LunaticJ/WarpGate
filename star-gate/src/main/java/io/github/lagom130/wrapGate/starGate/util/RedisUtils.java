@@ -10,6 +10,7 @@ public class RedisUtils {
    * ARGV[2] request get token can wait max ms
    * ARGV[3] bucket max token number
    * ARGV[4] token generate number/second
+   * return wait ms, if return -1 then do not get token
    */
   public static final String TOKEN_BUCKET_LUA_SCRIPT = """
     -- 令牌桶获取脚本（懒汉）\s
