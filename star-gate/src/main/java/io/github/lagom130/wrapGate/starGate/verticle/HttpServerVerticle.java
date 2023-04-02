@@ -1,9 +1,6 @@
 package io.github.lagom130.wrapGate.starGate.verticle;
 
-import io.github.lagom130.wrapGate.starGate.route.handler.ApiFailureHandler;
-import io.github.lagom130.wrapGate.starGate.route.handler.ExecuteHandler;
-import io.github.lagom130.wrapGate.starGate.route.handler.LogPreHandler;
-import io.github.lagom130.wrapGate.starGate.route.handler.ApiMetaHandler;
+import io.github.lagom130.wrapGate.starGate.route.handler.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.impl.logging.Logger;
@@ -30,6 +27,7 @@ public class HttpServerVerticle extends AbstractVerticle {
       .handler(TimeoutHandler.create(6000L, 504))
       .handler(BodyHandler.create())
       .handler(ApiMetaHandler.create(vertx))
+      .blockingHandler(ApiGolbalLimitHandler.create(vertx))
       .blockingHandler(ExecuteHandler.create(vertx))
       .failureHandler(ApiFailureHandler.create());
     vertx.createHttpServer().requestHandler(router).listen(port)

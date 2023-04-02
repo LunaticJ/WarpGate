@@ -26,7 +26,7 @@ public class ExecuteHandler implements Handler<RoutingContext> {
 
     JsonObject apiMeta = ctx.get("apiMeta", new JsonObject());
     WebClient webClient = WebClient.create(vertx);
-    String requestURI = uri.replace("/apis/"+apiMeta.getString("guid"), apiMeta.getString("path", ""));
+    String requestURI = uri.replace("/apis/"+apiMeta.getString("id"), apiMeta.getString("path", ""));
     webClient.request(ctx.request().method(), apiMeta.getInteger("port"), apiMeta.getString("host"), requestURI)
       .putHeaders(ctx.request().headers())
         .sendBuffer(ctx.body().buffer()).onSuccess(resp -> {

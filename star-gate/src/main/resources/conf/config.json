@@ -2,30 +2,39 @@
   "server": {
     "port": 9527
   },
+  "redis": "redis://default:redispw@localhost:32768",
   "apis":[
     {
+      "id": "00000",
       "name": "api-1",
-      "guid": "00000",
       "host": "localhost",
       "port": 4399,
       "path": "/test1"
     },{
+      "id": "00001",
       "name": "api-2",
-      "guid": "00001",
       "host": "localhost",
       "port": 4399,
       "path": "/test2"
     }
   ],
+  "apiGlobalLimits":[
+    {
+      "apiId": "00000",
+      "maxTokens": "10",
+      "secTokens": "1",
+      "maxWaitMS": 0
+    }
+  ],
   "clients":[
     {
       "name": "app-1",
-      "guid": "00000",
+      "id": "00000",
       "key": "1",
       "secret": "1"
     },{
       "name": "app-2",
-      "guid": "00001",
+      "id": "00001",
       "key": "2",
       "secret": "3"
     }
