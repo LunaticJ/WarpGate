@@ -30,7 +30,7 @@ public class CacheVerticle extends AbstractVerticle {
     }
     for (int i = 0; i < clients.size(); i++) {
       JsonObject client = clients.getJsonObject(i);
-      clientsMap.put(client.getString("id"), client);
+      clientsMap.put(client.getString("key"), client);
     }
     for (int i = 0; i < apiGlobalLimits.size(); i++) {
       JsonObject item = apiGlobalLimits.getJsonObject(i);
