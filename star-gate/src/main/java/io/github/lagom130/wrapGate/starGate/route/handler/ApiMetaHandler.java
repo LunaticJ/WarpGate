@@ -28,7 +28,7 @@ public class ApiMetaHandler implements Handler<RoutingContext> {
       if(apiInfo != null) {
         ctx.put("apiMeta", apiInfo).next();
       } else {
-        ctx.put("msg", "not found api").fail(404);
+        ctx.fail(404);
       }
     }).onFailure(t -> ctx.fail(500, t));
   }

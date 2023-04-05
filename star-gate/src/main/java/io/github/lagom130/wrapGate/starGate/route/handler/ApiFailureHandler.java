@@ -16,14 +16,24 @@ public class ApiFailureHandler implements Handler<RoutingContext> {
   }
   @Override
   public void handle(RoutingContext ctx) {
-    String gwErrorMsg = ctx.get("msg", "default msg");
+    int statusCode = ctx.statusCode();
+    String errorMsg = switch (statusCode){
+      case 401 -> "unauthorized";
+      case 404 -> "not found api";
+      case 403, 502 -> ctx.failure().getMessage();
+      case 504 -> "api timeout";
+      default -> {
+        LOGGER.error(ctx.failure().getMessage(), ctx.failure());
+        yield "gateway internal error";
+      }
+    };
     JsonObject bizLog = ctx.get("bizLog", new JsonObject());
-    bizLog.put("gwRespStatusCode", ctx.statusCode());
-    bizLog.put("gwErrorMsg", gwErrorMsg);
+    bizLog.put("gwRespStatusCode", statusCode);
+    bizLog.put("gwErrorMsg", errorMsg);
     bizLog.put("gwRespTimestamp", System.currentTimeMillis());
     LOGGER.error(bizLog.toString());
-    ctx.response().setStatusCode(ctx.statusCode())
-      .end(JsonObject.of("msg", gwErrorMsg).toString());
+    ctx.response().setStatusCode(statusCode)
+      .end(JsonObject.of("msg", errorMsg).toString());
   }
 }
 

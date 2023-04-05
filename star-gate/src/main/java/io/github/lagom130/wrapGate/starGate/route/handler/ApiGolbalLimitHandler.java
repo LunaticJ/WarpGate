@@ -1,5 +1,6 @@
 package io.github.lagom130.wrapGate.starGate.route.handler;
 
+import io.github.lagom130.wrapGate.starGate.exception.BizException;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
@@ -46,8 +47,7 @@ public class ApiGolbalLimitHandler implements Handler<RoutingContext> {
         eventBus.request(REDIS_EVAL, args).onSuccess(redisMsg -> {
           Integer resp = (Integer) redisMsg.body();
           if (resp == -1) {
-            ctx.put("msg", "this api have exceeded the global rate limit");
-            ctx.fail(503);
+            ctx.fail(403, new BizException("this api have exceeded the global rate limit"));
           } else if(resp > 0) {
             vertx.setTimer(resp/1000, l -> ctx.next());
           } else {

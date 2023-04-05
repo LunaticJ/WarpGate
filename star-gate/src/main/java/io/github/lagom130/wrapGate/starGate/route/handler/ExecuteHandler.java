@@ -34,7 +34,6 @@ public class ExecuteHandler implements Handler<RoutingContext> {
         resp.headers().forEach(httpServerResponse::putHeader);
         httpServerResponse.end(resp.bodyAsBuffer());
       }).onFailure(throwable -> {
-        ctx.put("msg", throwable.getMessage());
         ctx.fail(502, throwable);
       });
   }
