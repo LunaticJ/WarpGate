@@ -18,6 +18,7 @@
 
     <vertx.version>4.4.0</vertx.version>
     <junit-jupiter.version>5.9.1</junit-jupiter.version>
+    <hibernate-reactive-core.version>1.0.3.Final</hibernate-reactive-core.version>
 
     <main.verticle>io.github.lagom130.wrapGate.learn.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
@@ -50,11 +51,16 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-mysql-client</artifactId>
+      <artifactId>vertx-pg-client</artifactId>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-redis-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.reactive</groupId>
+      <artifactId>hibernate-reactive-core</artifactId>
+      <version>${hibernate-reactive-core.version}</version>
     </dependency>
 
     <dependency>
