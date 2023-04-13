@@ -2,23 +2,25 @@ package io.github.lagom130.warpGate.overlord;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 
+import java.util.List;
+
 public class DemoData {
-  @ExcelProperty(value = {"k1"})
+  @ExcelProperty(index = 0)
   private String k1;
-  @ExcelProperty(value = "k2")
+  @ExcelProperty(index = 1)
   private String k2;
-  @ExcelProperty(value = "k3")
-  private String k3;
-  @ExcelProperty(value = "k4")
+  @ExcelProperty(index = 2)
+  private String k3a;
+  @ExcelProperty(index = 3)
+  private String k3b;
+  @ExcelProperty(index = 4)
+  private String k3c;
+  @ExcelProperty(index = 5)
   private String k4;
-  @ExcelProperty(value = "k5")
-  private String k5;
-  @ExcelProperty(value = "k6")
-  private String k6;
-  @ExcelProperty(value = "k7")
-  private String k7;
-  @ExcelProperty(value = "k8")
-  private String k8;
+  @ExcelProperty(index = 6)
+  private String k5a;
+  @ExcelProperty(index = 7)
+  private String k5b;
 
   public String getK1() {
     return k1;
@@ -36,12 +38,28 @@ public class DemoData {
     this.k2 = k2;
   }
 
-  public String getK3() {
-    return k3;
+  public String getK3a() {
+    return k3a;
   }
 
-  public void setK3(String k3) {
-    this.k3 = k3;
+  public void setK3a(String k3a) {
+    this.k3a = k3a;
+  }
+
+  public String getK3b() {
+    return k3b;
+  }
+
+  public void setK3b(String k3b) {
+    this.k3b = k3b;
+  }
+
+  public String getK3c() {
+    return k3c;
+  }
+
+  public void setK3c(String k3c) {
+    this.k3c = k3c;
   }
 
   public String getK4() {
@@ -52,35 +70,29 @@ public class DemoData {
     this.k4 = k4;
   }
 
-  public String getK5() {
-    return k5;
+  public String getK5a() {
+    return k5a;
   }
 
-  public void setK5(String k5) {
-    this.k5 = k5;
+  public void setK5a(String k5a) {
+    this.k5a = k5a;
   }
 
-  public String getK6() {
-    return k6;
+  public String getK5b() {
+    return k5b;
   }
 
-  public void setK6(String k6) {
-    this.k6 = k6;
+  public void setK5b(String k5b) {
+    this.k5b = k5b;
   }
 
-  public String getK7() {
-    return k7;
-  }
-
-  public void setK7(String k7) {
-    this.k7 = k7;
-  }
-
-  public String getK8() {
-    return k8;
-  }
-
-  public void setK8(String k8) {
-    this.k8 = k8;
+  public RealDemoData toRDD() {
+    RealDemoData rdd = new RealDemoData();
+    rdd.setK1(k1);
+    rdd.setK2(k2);
+    rdd.setK3(List.of(new K3(k3a, k3b, k3c)));
+    rdd.setK4(k4);
+    rdd.setK5(List.of(new K5(k5a, k5b)));
+    return rdd;
   }
 }
