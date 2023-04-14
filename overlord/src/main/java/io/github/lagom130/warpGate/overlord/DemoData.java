@@ -5,22 +5,22 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import java.util.List;
 
 public class DemoData {
-  @ExcelProperty(index = 0)
-  private String k1;
   @ExcelProperty(index = 1)
   private String k2;
+  @ExcelProperty(index = 0)
+  private String k1;
   @ExcelProperty(index = 2)
   private String k3a;
-  @ExcelProperty(index = 3)
-  private String k3b;
   @ExcelProperty(index = 4)
   private String k3c;
+  @ExcelProperty(index = 3)
+  private String k3b;
   @ExcelProperty(index = 5)
   private String k4;
-  @ExcelProperty(index = 6)
-  private String k5a;
   @ExcelProperty(index = 7)
   private String k5b;
+  @ExcelProperty(index = 6)
+  private String k5a;
 
   public String getK1() {
     return k1;
