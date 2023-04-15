@@ -1,9 +1,11 @@
 package io.github.lagom130.warpGate.overlord;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 
 import java.util.List;
 
+@ExcelIgnoreUnannotated
 public class DemoData {
   @ExcelProperty(index = 1)
   private String k2;
@@ -15,7 +17,7 @@ public class DemoData {
   private String k3c;
   @ExcelProperty(index = 3)
   private String k3b;
-  @ExcelProperty(index = 5)
+//  @ExcelProperty(index = 5)
   private String k4;
   @ExcelProperty(index = 7)
   private String k5b;
