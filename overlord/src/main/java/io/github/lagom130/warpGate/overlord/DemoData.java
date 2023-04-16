@@ -21,8 +21,8 @@ public class DemoData {
   private String k4;
   @ExcelProperty(index = 7)
   private String k5b;
-  @ExcelProperty(index = 6)
-  private String k5a;
+  @ExcelProperty(index = 6, converter = BooleanConverter.class)
+  private Boolean k5a;
 
   public String getK1() {
     return k1;
@@ -72,11 +72,11 @@ public class DemoData {
     this.k4 = k4;
   }
 
-  public String getK5a() {
+  public Boolean getK5a() {
     return k5a;
   }
 
-  public void setK5a(String k5a) {
+  public void setK5a(Boolean k5a) {
     this.k5a = k5a;
   }
 

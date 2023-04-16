@@ -24,7 +24,7 @@ public class OutTest {
       demoData.setK3b("k3b值行"+i+", 哈哈哈哈"+(++j));
       demoData.setK3c("k3c值行"+i+", 哈哈哈哈"+(++j));
       demoData.setK4("k4值行"+i+", 哈哈哈哈"+(++j));
-      demoData.setK5a("k5a值行"+i+", 哈哈哈哈"+(++j));
+      demoData.setK5a(i%2==0 ? Boolean.TRUE : Boolean.FALSE);
       demoData.setK5b("k5b值行"+i+", 哈哈哈哈"+(++j));
       dataList.add(demoData);
       msgList.add(Map.of("msg", ++j+"测了格式，我就看看, "+i));

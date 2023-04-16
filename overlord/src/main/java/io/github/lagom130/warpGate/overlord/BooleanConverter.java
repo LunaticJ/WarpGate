@@ -9,7 +9,7 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 
-public class BooleanConverter implements Converter {
+public class BooleanConverter implements Converter<Boolean> {
   @Override
   public Class<?> supportJavaTypeKey() {
     return Converter.super.supportJavaTypeKey();
@@ -20,23 +20,19 @@ public class BooleanConverter implements Converter {
     return Converter.super.supportExcelTypeKey();
   }
 
-  @Override
-  public WriteCellData<?> convertToExcelData(Object value, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-    return Converter.super.convertToExcelData(value, contentProperty, globalConfiguration);
-  }
 
   @Override
-  public WriteCellData<?> convertToExcelData(WriteConverterContext context) throws Exception {
-    return Converter.super.convertToExcelData(context);
+  public Boolean convertToJavaData(ReadConverterContext<?> context) throws Exception {
+    return switch (context.getReadCellData().getStringValue()) {
+      case "是" -> true;
+      case "否" -> false;
+      default -> null;
+    };
   }
 
-  @Override
-  public Object convertToJavaData(ReadConverterContext context) throws Exception {
-    return Converter.super.convertToJavaData(context);
-  }
 
   @Override
-  public Object convertToJavaData(ReadCellData cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-    return Converter.super.convertToJavaData(cellData, contentProperty, globalConfiguration);
+  public WriteCellData<?> convertToExcelData(WriteConverterContext<Boolean> context) throws Exception {
+    return new WriteCellData<>(Boolean.TRUE.equals(context.getValue()) ? "是":"否");
   }
 }

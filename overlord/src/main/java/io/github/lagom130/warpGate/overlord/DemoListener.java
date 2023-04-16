@@ -32,7 +32,7 @@ public class DemoListener implements ReadListener<DemoData> {
         newK3L.add(nk3);
         temp.setK3(newK3L);
       }
-      if(!StringUtil.isNullOrEmpty(demoData.getK5a())) {
+      if(null != demoData.getK5a()) {
         K5 nk5 = new K5(demoData.getK5a(), demoData.getK5b());
         List<K5> k5 = temp.getK5();
         k5.add(nk5);
