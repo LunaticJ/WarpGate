@@ -2,8 +2,10 @@ package io.github.lagom130.warpGate.overlord;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.context.WriteContext;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
+import com.alibaba.excel.write.metadata.holder.WriteHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,8 @@ public class OutTest {
     }
     String title = "测试导入标题";
     try(ExcelWriter excelWriter = EasyExcel.write(outPath).withTemplate(templatePath).build()){
-      WriteSheet writeSheet0 = EasyExcel.writerSheet(0).build();
-      WriteSheet writeSheet1 = EasyExcel.writerSheet(1).build();
+      WriteSheet writeSheet0 = EasyExcel.writerSheet(0,"setName0").registerWriteHandler(SheetReNameWriteHandler.create()).build();
+      WriteSheet writeSheet1 = EasyExcel.writerSheet(1, "错误信息").registerWriteHandler(SheetReNameWriteHandler.create()).build();
       FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
       excelWriter.fill(dataList, fillConfig, writeSheet0);
       excelWriter.fill(msgList, fillConfig, writeSheet1);
