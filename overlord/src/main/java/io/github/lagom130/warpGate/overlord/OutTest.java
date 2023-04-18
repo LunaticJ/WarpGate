@@ -6,7 +6,9 @@ import com.alibaba.excel.context.WriteContext;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.holder.WriteHolder;
+import org.apache.commons.codec.binary.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,8 @@ public class OutTest {
       msgList.add(Map.of("msg", ++j+"测了格式，我就看看, "+i));
     }
     String title = "测试导入标题";
-    try(ExcelWriter excelWriter = EasyExcel.write(outPath).withTemplate(templatePath).build()){
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    try(ExcelWriter excelWriter = EasyExcel.write(outputStream).withTemplate(templatePath).build()){
       WriteSheet writeSheet0 = EasyExcel.writerSheet(0,"setName0").registerWriteHandler(SheetReNameWriteHandler.create()).build();
       WriteSheet writeSheet1 = EasyExcel.writerSheet(1, "错误信息").registerWriteHandler(SheetReNameWriteHandler.create()).build();
       FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
@@ -44,7 +47,8 @@ public class OutTest {
     } finally {
       System.out.println("finished");
     }
-
+    byte[] bytes = outputStream.toByteArray();
+    System.out.println(Base64.encodeBase64String(bytes));
 
   }
 }
