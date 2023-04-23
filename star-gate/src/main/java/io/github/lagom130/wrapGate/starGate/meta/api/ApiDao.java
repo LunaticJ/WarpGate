@@ -3,10 +3,16 @@ package io.github.lagom130.wrapGate.starGate.meta.api;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.Future;
 import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.RowIterator;
+import io.vertx.sqlclient.SqlResult;
 import io.vertx.sqlclient.templates.SqlTemplate;
 
+import java.sql.ResultSet;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class ApiDao {
 
@@ -22,6 +28,14 @@ public class ApiDao {
           .mapTo(ApiDO.class)
           .execute(Map.of("id", id)).onComplete(ar ->conn.close());
       }).compose(rs -> rs.size() == 1 ? Future.succeededFuture(rs.iterator().next()): Future.failedFuture(new Throwable("not found")));
+  }
+
+  public Future<RowIterator<ApiDO>> getList() {
+    return pool.getConnection().compose(conn -> {
+      return SqlTemplate.forQuery(conn, "select id, name, host, port, path, method, enabled, tenant_id, updated_time, created_time from gateway.api")
+        .mapTo(ApiDO.class)
+        .execute(Map.of()).onComplete(ar ->conn.close());
+    }).compose(rs ->  Future.succeededFuture(rs.iterator()));
   }
 
   public Future<Void> add(ApiInputBO inputBO) {
