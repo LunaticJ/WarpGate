@@ -1,5 +1,7 @@
 package io.github.lagom130.wrapGate.starGate.meta.api;
 
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -9,6 +11,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.stream.Collectors;
 
 public class ApiRoute {
   private ApiDao apiDao;
@@ -45,8 +48,19 @@ public class ApiRoute {
   }
 
   public void getList(RoutingContext ctx){
-    //todo:
-    ctx.end();
+    apiDao.getList().onSuccess(list -> ctx.end(list.stream().map(apiDO -> {
+        ApiDTO apiDTO = new ApiDTO();
+        try {
+          PropertyUtils.copyProperties(apiDTO, apiDO);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        return JsonObject.mapFrom(apiDTO);
+      }).collect(Collectors.toList()).toString()))
+        .onFailure(throwable -> {
+          throwable.printStackTrace();
+          ctx.end(throwable.getMessage());
+        });
   }
 
   public void getClients(RoutingContext ctx){
