@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 
 public class ClientDO {
   private String id;
+  private String name;
   private String key;
   private String secret;
   @JsonProperty("tenant_id")
@@ -25,6 +26,14 @@ public class ClientDO {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getKey() {
