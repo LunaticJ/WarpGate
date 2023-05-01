@@ -1,4 +1,4 @@
-package io.github.lagom130.wrapGate.starGate.meta.api;
+package io.github.lagom130.wrapGate.starGate.meta.api.dto;
 
 public class ApiInputDTO {
   private String name;
@@ -7,6 +7,10 @@ public class ApiInputDTO {
   private String path;
   private String method;
   private Boolean enabled;
+
+  private Long maxPerDay;
+
+  private TokenBucketLimitDTO tokenBucketLimit;
 
   public ApiInputDTO() {
   }
@@ -57,5 +61,21 @@ public class ApiInputDTO {
 
   public void setEnabled(Boolean enabled) {
     this.enabled = enabled;
+  }
+
+  public Long getMaxPerDay() {
+    return maxPerDay;
+  }
+
+  public void setMaxPerDay(Long maxPerDay) {
+    this.maxPerDay = maxPerDay;
+  }
+
+  public TokenBucketLimitDTO getTokenBucketLimit() {
+    return tokenBucketLimit;
+  }
+
+  public void setTokenBucketLimit(TokenBucketLimitDTO tokenBucketLimit) {
+    this.tokenBucketLimit = tokenBucketLimit;
   }
 }

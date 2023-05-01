@@ -1,4 +1,4 @@
-package io.github.lagom130.wrapGate.starGate.meta.client;
+package io.github.lagom130.wrapGate.starGate.meta.client.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

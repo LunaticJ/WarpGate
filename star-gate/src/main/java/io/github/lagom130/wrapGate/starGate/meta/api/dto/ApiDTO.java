@@ -1,4 +1,4 @@
-package io.github.lagom130.wrapGate.starGate.meta.api;
+package io.github.lagom130.wrapGate.starGate.meta.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

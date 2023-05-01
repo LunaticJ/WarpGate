@@ -1,7 +1,9 @@
 package io.github.lagom130.wrapGate.starGate.meta.api;
 
-import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonArray;
+import io.github.lagom130.wrapGate.starGate.meta.api.bo.ApiInputBO;
+import io.github.lagom130.wrapGate.starGate.meta.api.dto.ApiDTO;
+import io.github.lagom130.wrapGate.starGate.meta.api.dto.ApiInputDTO;
+import io.github.lagom130.wrapGate.starGate.meta.api.dto.SubDTO;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -10,7 +12,6 @@ import io.vertx.pgclient.PgPool;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Collectors;
 
 public class ApiRoute {
@@ -23,10 +24,11 @@ public class ApiRoute {
   public void addRoute( Router router) {
     router.get("/meta/apis").handler(this::getList);
     router.get("/meta/apis/:id").handler(this::getOne);
-    router.get("/meta/apis/:id/clients").handler(this::getClients);
     router.delete("/meta/apis/:id").handler(this::deleteOne);
     router.put("/meta/apis/:id").consumes("*/json").handler(BodyHandler.create()).handler(this::updateOne);
     router.post("/meta/apis").consumes("*/json").handler(BodyHandler.create()).handler(this::addOne);
+    // -------------------------------- subscription --------------------------------
+    router.get("/meta/apis/:id/clients").handler(this::getClients);
   }
 
   public void getOne(RoutingContext ctx){
@@ -65,8 +67,19 @@ public class ApiRoute {
 
   public void getClients(RoutingContext ctx){
     String id = ctx.pathParam("id");
-    //todo:
-    ctx.end();
+    apiDao.getSubscriptionClientList(id).onSuccess(list -> ctx.end(list.stream().map(entity -> {
+        SubDTO subDTO = new SubDTO();
+        try {
+          PropertyUtils.copyProperties(subDTO, entity);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        return JsonObject.mapFrom(subDTO);
+      }).collect(Collectors.toList()).toString()))
+      .onFailure(throwable -> {
+        throwable.printStackTrace();
+        ctx.end(throwable.getMessage());
+      });
   }
 
   public void addOne(RoutingContext ctx){

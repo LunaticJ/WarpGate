@@ -1,26 +1,24 @@
-package io.github.lagom130.wrapGate.starGate.meta.api;
+package io.github.lagom130.wrapGate.starGate.meta.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
-public class ApiDO {
+public class SubApiDTO extends SubApiInputDTO{
   private String id;
+  private String apiId;
   private String name;
   private String host;
   private Integer port;
   private String path;
   private String method;
-  private Boolean enabled;
-  @JsonProperty("tenant_id")
-  private String tenantId;
-  @JsonProperty("updated_time")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "GMT+8", shape = JsonFormat.Shape.OBJECT)
   private OffsetDateTime updatedTime;
-  @JsonProperty("created_time")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "GMT+8", shape = JsonFormat.Shape.OBJECT)
   private OffsetDateTime createdTime;
 
-  public ApiDO() {
+  public SubApiDTO() {
   }
 
   public String getId() {
@@ -29,6 +27,14 @@ public class ApiDO {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public String getApiId() {
+    return apiId;
+  }
+
+  public void setApiId(String apiId) {
+    this.apiId = apiId;
   }
 
   public String getName() {
@@ -69,22 +75,6 @@ public class ApiDO {
 
   public void setMethod(String method) {
     this.method = method;
-  }
-
-  public Boolean getEnabled() {
-    return enabled;
-  }
-
-  public void setEnabled(Boolean enabled) {
-    this.enabled = enabled;
-  }
-
-  public String getTenantId() {
-    return tenantId;
-  }
-
-  public void setTenantId(String tenantId) {
-    this.tenantId = tenantId;
   }
 
   public OffsetDateTime getUpdatedTime() {
