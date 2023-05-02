@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class ApiDao {
 
   private PgPool pool;
+  private Vertx vertx;
 
   private final static String TABLE = "gateway.api";
   private final static String COLUMNS = "id, name, host, port, path, method, enabled, token_bucket_limit, tenant_id, updated_time, created_time";
@@ -29,13 +30,14 @@ public class ApiDao {
   private final static String GET_CLIENTS_BY_ID ="SELECT s.id, c.id as client_id, c.name as name, c.updated_time as updated_time, c.created_time as created_time, s.expire_time as expire, s.max_per_day as max_per_day, s.priority as priority FROM gateway.client as c inner join gateway.subscription as s on c.id = s.client_id and s.api_id = #{apiId}";
 
 
-  public ApiDao(PgPool pool) {
+  public ApiDao(Vertx vertx, PgPool pool) {
     this.pool = pool;
+    this.vertx = vertx;
   }
 
 
   public Future<ApiDO> getById(String id) {
-    String tenantId = Optional.ofNullable((String)Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String)vertx.getOrCreateContext().get("tenantId")).orElse("default");
     return pool.getConnection().compose(conn -> SqlTemplate.forQuery(conn, GET_BY_ID)
       .mapTo(ApiDO.class)
       .execute(Map.of("id", id, "tenantId", Optional.ofNullable(tenantId).orElse("default")))
@@ -43,14 +45,14 @@ public class ApiDao {
   }
 
   public Future<List<ApiDO>> getList() {
-    String tenantId = Optional.ofNullable((String)Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String)vertx.getOrCreateContext().get("tenantId")).orElse("default");
     return pool.getConnection().compose(conn -> SqlTemplate.forQuery(conn, GET_LIST)
       .collecting(Collectors.mapping(row -> JsonMapper.mapper(row, ApiDO.class), Collectors.toList()))
       .execute(Map.of("tenantId", Optional.ofNullable(tenantId).orElse("default"))).onComplete(ar -> conn.close())).map(SqlResult::value);
   }
 
   public Future<Void> add(ApiInputBO inputBO) {
-    String tenantId = Optional.ofNullable((String)Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String)vertx.getOrCreateContext().get("tenantId")).orElse("default");
     inputBO.setId(UUID.randomUUID().toString());
     inputBO.setTenantId(tenantId);
     return pool.getConnection().compose(conn -> SqlTemplate.forUpdate(conn, INSERT)
@@ -59,7 +61,7 @@ public class ApiDao {
   }
 
   public Future<Void> deleteById(String id) {
-    String tenantId = Optional.ofNullable((String)Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String)vertx.getOrCreateContext().get("tenantId")).orElse("default");
     return pool.getConnection().compose(conn -> SqlTemplate.forUpdate(conn, DELETE_BY_ID)
       .execute(Map.of("id", id, "tenantId", Optional.ofNullable(tenantId).orElse("default"))))
       .compose(rs -> rs.rowCount() == 1 ? Future.succeededFuture() : Future.failedFuture("delete failed"));

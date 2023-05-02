@@ -12,7 +12,7 @@ public class MetaRouteBuilder {
       Vertx.vertx().getOrCreateContext().put("tenantId", ctx.request().getHeader("tenantId"));
     });
     // api
-    new ApiRoute(pool).addRoute(router);
+    new ApiRoute(vertx, pool).addRoute(router);
     // client
     new ClientRoute(pool).addRoute(router);
     return router;

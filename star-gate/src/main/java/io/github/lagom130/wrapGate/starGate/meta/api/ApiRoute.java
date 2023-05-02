@@ -4,6 +4,7 @@ import io.github.lagom130.wrapGate.starGate.meta.api.bo.ApiInputBO;
 import io.github.lagom130.wrapGate.starGate.meta.api.dto.ApiDTO;
 import io.github.lagom130.wrapGate.starGate.meta.api.dto.ApiInputDTO;
 import io.github.lagom130.wrapGate.starGate.meta.api.dto.SubDTO;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -17,8 +18,10 @@ import java.util.stream.Collectors;
 public class ApiRoute {
   private ApiDao apiDao;
 
-  public ApiRoute(PgPool pool) {
-    this.apiDao = new ApiDao(pool);
+  private Vertx vertx;
+
+  public ApiRoute(Vertx vertx, PgPool pool) {
+    this.apiDao = new ApiDao(vertx, pool);
   }
 
   public void addRoute( Router router) {
