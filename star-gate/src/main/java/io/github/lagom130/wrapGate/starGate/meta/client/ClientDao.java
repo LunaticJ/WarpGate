@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 
 public class ClientDao {
 
+  private Vertx vertx;
+
   private PgPool pool;
 
   private final static String TABLE = "gateway.client";
@@ -33,14 +35,15 @@ public class ClientDao {
   private final static String INSERT_SUBSCRIPTION ="INSERT INTO gateway.subscription (api_id, client_id, max_per_day, expire_time) VALUES(api_id=#{apiId}, client_id=#{clientId},max_per_day=#{maxPerDay},expire_time=#{expireTime})";
 
 
-  public ClientDao(PgPool pool) {
+  public ClientDao(Vertx vertx, PgPool pool) {
+    this.vertx = vertx;
     this.pool = pool;
   }
 
 
 
   public Future<ClientDO> getById(String id) {
-    String tenantId = Optional.ofNullable((String) Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String) vertx.getOrCreateContext().get("tenantId")).orElse("default");
     return pool.getConnection().compose(conn -> SqlTemplate.forQuery(conn, GET_BY_ID)
       .mapTo(ClientDO.class)
       .execute(Map.of("id", id, "tenantId", Optional.ofNullable(tenantId).orElse("default")))
@@ -48,14 +51,14 @@ public class ClientDao {
   }
 
   public Future<List<ClientDO>> getList() {
-    String tenantId = Optional.ofNullable((String)Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String)vertx.getOrCreateContext().get("tenantId")).orElse("default");
     return pool.getConnection().compose(conn -> SqlTemplate.forQuery(conn, GET_LIST)
       .collecting(Collectors.mapping(row -> JsonMapper.mapper(row, ClientDO.class), Collectors.toList()))
       .execute(Map.of("tenantId", Optional.ofNullable(tenantId).orElse("default"))).onComplete(ar -> conn.close())).map(SqlResult::value);
   }
 
   public Future<Void> add(ClientInputBO inputBO) {
-    String tenantId = Optional.ofNullable((String)Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String)vertx.getOrCreateContext().get("tenantId")).orElse("default");
     inputBO.setId(UUID.randomUUID().toString());
     inputBO.setTenantId(tenantId);
     return pool.getConnection().compose(conn -> SqlTemplate.forUpdate(conn, INSERT)
@@ -64,7 +67,7 @@ public class ClientDao {
   }
 
   public Future<Void> deleteById(String id) {
-    String tenantId = Optional.ofNullable((String)Vertx.vertx().getOrCreateContext().get("tenantId")).orElse("default");
+    String tenantId = Optional.ofNullable((String)vertx.getOrCreateContext().get("tenantId")).orElse("default");
     return pool.getConnection().compose(conn -> SqlTemplate.forUpdate(conn, DELETE_BY_ID)
         .execute(Map.of("id", id, "tenantId", Optional.ofNullable(tenantId).orElse("default"))))
       .compose(rs -> rs.rowCount() == 1 ? Future.succeededFuture() : Future.failedFuture("delete failed"));

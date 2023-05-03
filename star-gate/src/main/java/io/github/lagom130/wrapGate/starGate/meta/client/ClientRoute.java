@@ -3,6 +3,7 @@ package io.github.lagom130.wrapGate.starGate.meta.client;
 import io.github.lagom130.wrapGate.starGate.meta.client.bo.ClientInputBO;
 import io.github.lagom130.wrapGate.starGate.meta.client.bo.SubApiInputBO;
 import io.github.lagom130.wrapGate.starGate.meta.client.dto.*;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -14,10 +15,12 @@ import org.apache.commons.beanutils.PropertyUtils;
 import java.util.stream.Collectors;
 
 public class ClientRoute {
+
+  private Vertx vertx;
   private ClientDao clientDao;
 
-  public ClientRoute(PgPool pool) {
-    this.clientDao = new ClientDao(pool);
+  public ClientRoute(Vertx vertx, PgPool pool) {
+    this.clientDao = new ClientDao(vertx, pool);
   }
 
   public void addRoute( Router router) {
