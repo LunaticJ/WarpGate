@@ -14,7 +14,7 @@ public class MetaRouteBuilder {
     // api
     new ApiRoute(vertx, pool).addRoute(router);
     // client
-    new ClientRoute(pool).addRoute(router);
+    new ClientRoute(vertx, pool).addRoute(router);
     return router;
   }
 }
