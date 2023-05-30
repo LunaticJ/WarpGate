@@ -1,0 +1,9 @@
+server:
+  port: 9527
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgrespw
+    url: jdbc:postgresql://localhost:32768/postgres?currentSchema=nydus
