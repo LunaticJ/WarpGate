@@ -1,6 +1,6 @@
 package io.github.lagom130.nydus.mapper;
 
-import io.github.lagom130.nydus.entity.CatalogGroup;
+import io.github.lagom130.nydus.entity.CatalogGroupEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author lagom
  * @since 2023-05-31
  */
-public interface CatalogGroupMapper extends BaseMapper<CatalogGroup> {
+public interface CatalogGroupMapper extends BaseMapper<CatalogGroupEntity> {
 
 }
